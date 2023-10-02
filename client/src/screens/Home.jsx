@@ -14,7 +14,7 @@ const Home = () => {
   }, []);
 
   const loadData = async () => {
-    const response = await axios.post("http://localhost:5000/api/foodItems", {
+    const response = await axios.post("https://foodhut-server.onrender.com/foodItems", {
       headers: {
         "content-type": "application/josn",
       },
