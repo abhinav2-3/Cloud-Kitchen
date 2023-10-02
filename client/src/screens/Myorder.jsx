@@ -9,7 +9,7 @@ const Myorder = () => {
   const myOrder = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/myOrder",
+        "https://foodhut-server.onrender.com/myOrder",
         { email },
         {
           headers: {
