@@ -19,7 +19,7 @@ const Cart = () => {
     const email = localStorage.getItem("userEmail");
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/checkout",
+        "https://foodhut-server.onrender.com/checkout",
         {
           email,
           orderData: data,
