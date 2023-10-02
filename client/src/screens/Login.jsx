@@ -30,7 +30,7 @@ const Login = () => {
     };
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/login",
+        "https://foodhut-server.onrender.com/login",
         formData,
         {
           headers: {
