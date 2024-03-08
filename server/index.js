@@ -18,6 +18,8 @@ app.get("/", (req, res) => {
 
 database();
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is Running on http://localhost:${process.env.PORT}`);
+const port = process.env.PORT || 8000;
+
+app.listen(port, () => {
+  console.log(`Server is Running on http://localhost:${port}`);
 });

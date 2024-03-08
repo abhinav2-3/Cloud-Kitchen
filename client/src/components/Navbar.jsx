@@ -1,87 +1,83 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Badge from "react-bootstrap/Badge";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Modal from "../screens/Modal";
 import Cart from "../screens/Cart";
 import { useCart } from "./ContextReducer";
+import { FaCartFlatbed } from "react-icons/fa6";
 
 const Navbar = () => {
   const data = useCart();
-  const [cartView, setCartView] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
   const auth = localStorage.getItem("authToken");
+  const [cartView, setCartView] = useState(false);
+
+  const isLoginPage = location.pathname === "/login";
+  const isSignupPage = location.pathname === "/signup";
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/signup");
   };
+
   return (
-    <nav className="navbar navbar-expand-lg bg-danger">
-      <div className="container-fluid">
-        <Link
-          className="navbar-brand text-white fs-2 font-weight-bold"
-          to={"/"}
-        >
-          Food Hut.
-        </Link>
-        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav me-auto text-white">
+    <nav className="bg-red-600 py-3 px-12 flex justify-between place-items-center">
+      <Link className="text-3xl font-bold uppercase text-white" to={"/"}>
+        Cloud Kitchen.
+      </Link>
+      <div className="flex place-items-center gap-4 text-xl font-medium ">
+        {auth ? (
+          <>
             <Link
-              to={"/"}
-              className="nav-link active text-white font-weight-bold"
+              to={"myorder"}
+              className="text-white hover:text-black/60"
               aria-current="page"
             >
-              Home
+              My Orders
             </Link>
-
-            {auth ? (
-              <Link
-                to={"myorder"}
-                className="nav-link active text-white font-weight-bold disabled"
-                aria-current="page"
-              >
-                My Orders
-              </Link>
-            ) : (
-              ""
+            <div
+              className="cursor-pointer flex text-white hover:text-black/60 w-20 gap-2 cart-logo"
+              onClick={() => setCartView(true)}
+            >
+              <FaCartFlatbed size={28} />
+              {data.length > 0 && (
+                <span className="bg-white w-6 h-6 grid place-items-center font-bold text-sm rounded-full text-red-700 ">
+                  {data.length}
+                </span>
+              )}
+            </div>
+            {cartView && (
+              <Modal onClose={() => setCartView(false)}>
+                <Cart />
+              </Modal>
             )}
-          </div>
-
-          {!auth ? (
-            <div className="d-flex justify-content-end">
-              <Link to={"/login"} className="btn bg-white text-danger mx-2">
-                Login
-              </Link>
-              <Link to={"/signup"} className="btn bg-white text-danger mx-2">
-                SignUp
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <div
-                className="btn bg-white text-danger mx-2"
-                onClick={() => setCartView(true)}
-              >
-                Cart{"  "}
-                <Badge pill bg="danger">
-                  {data.length === 0 ? "" : data.length}
-                </Badge>
-              </div>
-              {cartView ? (
-                <Modal onClose={() => setCartView(false)}>
-                  <Cart />
-                </Modal>
-              ) : null}
-              <Link
-                to={"/signup"}
-                className="btn bg-white text-danger mx-2"
-                onClick={handleLogout}
-              >
-                Logout
-              </Link>
-            </div>
-          )}
-        </div>
+            <Link
+              to={"/signup"}
+              className="bg-white text-red-700 py-[0.3rem] px-3 rounded-md"
+              onClick={handleLogout}
+            >
+              Logout
+            </Link>
+          </>
+        ) : isLoginPage ? (
+          <Link to={"/signup"} className="text-white hover:text-black/60">
+            SignUp
+          </Link>
+        ) : isSignupPage ? (
+          <Link to={"/login"} className="text-white hover:text-black/60">
+            Login
+          </Link>
+        ) : (
+          <>
+            <Link to={"/signup"} className="text-white hover:text-black/60">
+              SignUp
+            </Link>
+            <Link to={"/signup"} className="text-white hover:text-black/60">
+              SignUp
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );

@@ -14,7 +14,7 @@ const Card = (props) => {
   const handleAddToCart = async () => {
     let food = [];
     for (const item of data) {
-      if (item.id === props.foodItems._id) {
+      if (item.id === props.items._id) {
         food = item;
         break;
       }
@@ -23,7 +23,7 @@ const Card = (props) => {
       if (food.size === size) {
         await dispatch({
           type: "UPDATE",
-          id: props.foodItems._id,
+          id: props.items._id,
           price: finalPrice,
           qty: qty,
         });
@@ -31,8 +31,8 @@ const Card = (props) => {
       } else if (food.size !== size) {
         await dispatch({
           type: "ADD",
-          id: props.foodItems._id,
-          name: props.foodItems.name,
+          id: props.items._id,
+          name: props.items.name,
           price: finalPrice,
           qty: qty,
           size: size,
@@ -44,12 +44,12 @@ const Card = (props) => {
     }
     await dispatch({
       type: "ADD",
-      id: props.foodItems._id,
-      name: props.foodItems.name,
+      id: props.items._id,
+      name: props.items.name,
       price: finalPrice,
       qty: qty,
       size: size,
-      img: props.foodItems.img,
+      img: props.items.img,
     });
   };
 
@@ -58,21 +58,20 @@ const Card = (props) => {
   }, []);
 
   return (
-    <div className="card mt-3" style={{ width: "18rem", maxHeight: "360px" }}>
+    <div className="w-[20%] bg-slate-200 rounded-lg overflow-hidden">
       <img
-        src={props.foodItems.img}
-        className="card-img-top"
-        style={{ height: "130px", objectFit: "fill" }}
-        alt="..."
+        src={props.items.img}
+        className="object-cover w-full h-44"
+        alt={props.items.name}
       />
-      <div className="card-body">
-        <h5 className="card-title">{props.foodItems.name}</h5>
-        <div className="container w-100">
+      <div className="p-3 text-gray-900 flex flex-col gap-2">
+        <h5 className="text-xl font-bold">{props.items.name}</h5>
+        <div className="flex gap-2 justify-between">
           <select
-            className="m-2 h-100 bg-danger rounded text-white"
+            className="rounded-3xl border-red-700 border-2 py-1"
             onChange={(e) => setQty(e.target.value)}
           >
-            {Array.from(Array(5), (e, i) => {
+            {Array.from(Array(5), (_, i) => {
               return (
                 <option key={i + 1} value={i + 1}>
                   {i + 1}
@@ -81,7 +80,7 @@ const Card = (props) => {
             })}
           </select>
           <select
-            className="m-2 h-100 bg-danger rounded text-white"
+            className="rounded-3xl border-red-700 border-2 py-1"
             ref={priceRef}
             onChange={(e) => setSize(e.target.value)}
           >
@@ -93,11 +92,10 @@ const Card = (props) => {
               );
             })}
           </select>
-          <div className="d-inline h-100 fs-5">₹{finalPrice}/-</div>
         </div>
-        <hr />
+        <h3 className="text-xl font-semibold">₹{finalPrice}/-</h3>
         <button
-          className="btn btn-danger justify-center ms-2"
+          className="bg-red-700 rounded py-2 text-white font-semibold"
           onClick={handleAddToCart}
         >
           Add To Cart

@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
-router.post("/foodItems", foodItems);
+router.get("/foodItems", foodItems);
 router.post("/checkout", cartData);
 router.post("/myOrder", myOrderData);
 

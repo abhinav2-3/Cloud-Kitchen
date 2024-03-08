@@ -19,7 +19,7 @@ const Cart = () => {
     const email = localStorage.getItem("userEmail");
     try {
       const response = await axios.post(
-        "https://foodhut-server.onrender.com/checkout",
+        "http://localhost:8000/api/checkout",
         {
           email,
           orderData: data,
@@ -31,7 +31,6 @@ const Cart = () => {
           },
         }
       );
-      console.log(response.status);
       if (response.status === 200) {
         disptach({ type: "DROP" });
       }

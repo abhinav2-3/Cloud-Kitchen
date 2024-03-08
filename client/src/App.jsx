@@ -1,25 +1,25 @@
-import "./styles/App.scss";
 import Home from "./screens/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./screens/Signup";
 import Login from "./screens/Login";
-import "../node_modules/bootstrap-dark-5/dist/css/bootstrap-dark.min.css";
-import "../node_modules/bootstrap/dist/js/bootstrap.bundle";
-import CartProvider from "./components/ContextReducer";
-import Myorder from "./screens/Myorder";
+// import Myorder from "./screens/Myorder";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
-    <CartProvider>
+    <div className="bg-gray-900 w-full h-full">
       <Router>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/myorder" element={<Myorder />} />
+          {/* <Route path="/myorder" element={<Myorder />} /> */}
         </Routes>
+        <Footer />
       </Router>
-    </CartProvider>
+    </div>
   );
 }
 

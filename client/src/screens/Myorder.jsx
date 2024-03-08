@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import axios from "axios";
 
 const Myorder = () => {
@@ -9,7 +7,7 @@ const Myorder = () => {
   const myOrder = async () => {
     try {
       const response = await axios.post(
-        "https://foodhut-server.onrender.com/myOrder",
+        "http://localhost:8000/api/myOrder",
         { email },
         {
           headers: {
@@ -25,16 +23,12 @@ const Myorder = () => {
     }
   };
 
-  useEffect(() => {
-    myOrder();
-  }, []);
+  // useEffect(() => {
+  //   myOrder();
+  // }, []);
 
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
-
       <div className="container">
         <div className="row">
           {orderedData.length !== 0
@@ -101,10 +95,6 @@ const Myorder = () => {
               })
             : ""}
         </div>
-      </div>
-
-      <div>
-        <Footer />
       </div>
     </div>
   );
