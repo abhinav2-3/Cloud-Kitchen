@@ -1,57 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatchCart, useCart } from "./ContextReducer";
+// import { useDispatchCart, useCart } from "./ContextReducer";
+import { useProductContext } from "../Context/ProductContext";
 
-const Card = (props) => {
+const Card = ({ items, option }) => {
   const [size, setSize] = useState("");
   const [qty, setQty] = useState(1);
   const priceRef = useRef();
-  const dispatch = useDispatchCart();
-  const data = useCart();
-  const option = props.option;
   const priceOption = Object.keys(option);
   const finalPrice = qty * parseInt(option[size]);
-
-  const handleAddToCart = async () => {
-    let food = [];
-    for (const item of data) {
-      if (item.id === props.items._id) {
-        food = item;
-        break;
-      }
-    }
-    if (food.length !== 0) {
-      if (food.size === size) {
-        await dispatch({
-          type: "UPDATE",
-          id: props.items._id,
-          price: finalPrice,
-          qty: qty,
-        });
-        return;
-      } else if (food.size !== size) {
-        await dispatch({
-          type: "ADD",
-          id: props.items._id,
-          name: props.items.name,
-          price: finalPrice,
-          qty: qty,
-          size: size,
-        });
-
-        return;
-      }
-      return;
-    }
-    await dispatch({
-      type: "ADD",
-      id: props.items._id,
-      name: props.items.name,
-      price: finalPrice,
-      qty: qty,
-      size: size,
-      img: props.items.img,
-    });
-  };
+  const { handleAddToCart } = useProductContext();
 
   useEffect(() => {
     setSize(priceRef.current.value);
@@ -60,12 +17,12 @@ const Card = (props) => {
   return (
     <div className="w-[20%] bg-slate-200 rounded-lg overflow-hidden">
       <img
-        src={props.items.img}
+        src={items.img}
         className="object-cover w-full h-44"
-        alt={props.items.name}
+        alt={items.name}
       />
       <div className="p-3 text-gray-900 flex flex-col gap-2">
-        <h5 className="text-xl font-bold">{props.items.name}</h5>
+        <h5 className="text-xl font-bold">{items.name}</h5>
         <div className="flex gap-2 justify-between">
           <select
             className="rounded-3xl border-red-700 border-2 py-1"
@@ -96,7 +53,7 @@ const Card = (props) => {
         <h3 className="text-xl font-semibold">₹{finalPrice}/-</h3>
         <button
           className="bg-red-700 rounded py-2 text-white font-semibold"
-          onClick={handleAddToCart}
+          onClick={() => handleAddToCart(items, qty, finalPrice, size)}
         >
           Add To Cart
         </button>

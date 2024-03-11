@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import reducer from "../Reducers/ProductReducers";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AppContext = createContext();
 
@@ -11,11 +12,13 @@ const initialState = {
   isError: false,
   items: [],
   categoryData: [],
+  cart: [],
 };
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // Fetching API Data
   const getApiData = async (URL) => {
     dispatch({ type: "SET_LOADING" });
     try {
@@ -35,8 +38,23 @@ const AppProvider = ({ children }) => {
     getApiData(API);
   }, []);
 
+  //Handling Cart action
+  const handleAddToCart = (items, qty, finalPrice, size) => {
+    toast("Item Added Successfully✅");
+    return dispatch({
+      type: "ADD_TO_CART",
+      payload: { items, qty, finalPrice, size },
+    });
+  };
+
+  const removeItem = (food) => {
+    return dispatch({ type: "REMOVE", payload: { id: food.id } });
+  };
+
   return (
-    <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ ...state, handleAddToCart, removeItem }}>
+      {children}
+    </AppContext.Provider>
   );
 };
 

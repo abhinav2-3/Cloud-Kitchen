@@ -17,46 +17,61 @@ const productReducer = (state, action) => {
         categoryData,
       };
     }
-    case "ADD":
-      return [
+    case "ADD_TO_CART": {
+      const { items, qty, finalPrice, size } = action.payload;
+
+      const existingItem = state.cart.find(
+        (currElem) => currElem.id === items._id && currElem.size === size
+      );
+      if (existingItem) {
+        const updatedCart = state.cart.map((elem) => {
+          if (elem.id === items._id) {
+            const amount = parseInt(elem.qty) + parseInt(qty);
+            const price = elem.price + finalPrice;
+            return {
+              ...elem,
+              qty: amount,
+              price,
+            };
+          } else {
+            return elem;
+          }
+        });
+
+        return {
+          ...state,
+          cart: updatedCart,
+        };
+      }
+
+      // If the item doesn't exist in the cart or has a different size, add it as a new item
+      const cartItem = {
+        id: items._id,
+        qty,
+        size,
+        name: items.name,
+        price: finalPrice,
+      };
+
+      return {
         ...state,
-        {
-          id: action.id,
-          name: action.name,
-          qty: action.qty,
-          size: action.size,
-          img: action.img,
-          price: action.price,
-        },
-      ];
+        cart: [...state.cart, cartItem],
+      };
+    }
 
-    case "REMOVE":
-      const newArr = [...state];
-      newArr.splice(action.index, 1);
-      return newArr;
+    case "REMOVE": {
+      const { id } = action.payload;
+      const newCartItems = [...state.cart].filter((elem) => elem.id !== id);
+      return {
+        ...state,
+        cart: newCartItems,
+      };
+    }
 
-    case "DROP":
-      const empArray = [];
-      return empArray;
+    // case "DROP":
+    //   const empArray = [];
+    //   return empArray;
 
-    case "UPDATE":
-      let arr = [...state];
-      arr.find((food, index) => {
-        if (food.id === action.id) {
-          console.log(
-            food.qty,
-            parseInt(action.qty),
-            action.price + food.price
-          );
-          arr[index] = {
-            ...food,
-            qty: parseInt(action.qty) + food.qty,
-            price: action.price + food.price,
-          };
-        }
-        return arr;
-      });
-      return arr;
     default:
       return state;
   }

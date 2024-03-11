@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
+import { RxCross1 } from "react-icons/rx";
 
 const MODAL_STYLES = {
   position: "fixed",
@@ -10,6 +11,7 @@ const MODAL_STYLES = {
   zIndex: 1000,
   height: "90%",
   width: "90%",
+  overflow: "scroll",
 };
 
 const OVERLAY_STYLES = {
@@ -28,12 +30,11 @@ export default function Modal({ children, onClose }) {
       <div style={OVERLAY_STYLES} />
       <div style={MODAL_STYLES}>
         <button
-          className="btn bg-danger fs-4"
-          style={{ marginLeft: "90%", marginTop: "-35px" }}
+          className="bg-red-600 p-2 rounded ml-[95%] mt-1 font-bold"
+          style={{ marginLeft: "95%", marginTop: "5px" }}
           onClick={onClose}
         >
-          {" "}
-          X{" "}
+          <RxCross1 size={30} color="white" />
         </button>
         {children}
       </div>

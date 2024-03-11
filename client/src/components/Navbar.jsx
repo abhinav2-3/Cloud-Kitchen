@@ -2,19 +2,20 @@ import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Modal from "../screens/Modal";
 import Cart from "../screens/Cart";
-import { useCart } from "./ContextReducer";
+// import { useCart } from "./ContextReducer";
+import { useProductContext } from "../Context/ProductContext";
 import { FaCartFlatbed } from "react-icons/fa6";
 
 const Navbar = () => {
-  const data = useCart();
+  // const data = useCart();
+  const { cart } = useProductContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+  const isSignupPage = location.pathname === "/signup";
 
   const auth = localStorage.getItem("authToken");
   const [cartView, setCartView] = useState(false);
-
-  const isLoginPage = location.pathname === "/login";
-  const isSignupPage = location.pathname === "/signup";
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -41,11 +42,9 @@ const Navbar = () => {
               onClick={() => setCartView(true)}
             >
               <FaCartFlatbed size={28} />
-              {data.length > 0 && (
-                <span className="bg-white w-6 h-6 grid place-items-center font-bold text-sm rounded-full text-red-700 ">
-                  {data.length}
-                </span>
-              )}
+              <span className="bg-white w-6 h-6 grid place-items-center font-bold text-sm rounded-full text-red-700 ">
+                {cart.length}
+              </span>
             </div>
             {cartView && (
               <Modal onClose={() => setCartView(false)}>
