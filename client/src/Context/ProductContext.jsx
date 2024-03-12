@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 const AppContext = createContext();
 
-const API = "http://localhost:8000/api/foodItems";
+const API = "https://foodhut-server.onrender.com/api/foodItems";
 
 const initialState = {
   isLoading: false,

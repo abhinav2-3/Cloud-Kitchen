@@ -28,7 +28,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/signup",
+        "https://foodhut-server.onrender.com/api/signup",
         formData,
         {
           headers: {

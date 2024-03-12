@@ -13,10 +13,10 @@ const Cart = () => {
 
   const totalPrice = cart.reduce((total, food) => total + food.price, 0);
 
-  const API_SET_ORDER = "http://localhost:8000/api/placeOrder";
-  const API_CHEKOUT_ORDER = "http://localhost:8000/api/checkout";
-  const API_GET_KEY = "http://localhost:8000/api/getkey";
-  const API_VALIDATE = "http://localhost:8000/api/validate";
+  const API_SET_ORDER = "https://foodhut-server.onrender.com/api/placeOrder";
+  const API_CHEKOUT_ORDER = "https://foodhut-server.onrender.com/api/checkout";
+  const API_GET_KEY = "https://foodhut-server.onrender.com/api/getkey";
+  const API_VALIDATE = "https://foodhut-server.onrender.com/api/validate";
 
   const placeOrder = async () => {
     const data = localStorage.getItem("user");

@@ -7,8 +7,8 @@ const Myorder = () => {
   const [orderedData, setOrderedData] = useState([]);
   const userData = localStorage.getItem("user");
   const user = JSON.parse(userData);
-  const API_GET_ORDER = "http://localhost:8000/api/myOrder";
-  const API_CLEAR_ORDER = "http://localhost:8000/api/clearOrder";
+  const API_GET_ORDER = "https://foodhut-server.onrender.com/api/myOrder";
+  const API_CLEAR_ORDER = "https://foodhut-server.onrender.com/api/clearOrder";
 
   const myOrder = async () => {
     try {
