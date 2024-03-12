@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-// import { useDispatchCart, useCart } from "./ContextReducer";
 import { useProductContext } from "../Context/ProductContext";
 
 const Card = ({ items, option }) => {
@@ -15,7 +14,7 @@ const Card = ({ items, option }) => {
   }, []);
 
   return (
-    <div className="w-[20%] bg-slate-200 rounded-lg overflow-hidden">
+    <div className="lg:w-[23%] md:w-[45%] w-5/6 bg-slate-200 rounded-lg overflow-hidden">
       <img
         src={items.img}
         className="object-cover w-full h-44"

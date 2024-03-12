@@ -68,9 +68,11 @@ const productReducer = (state, action) => {
       };
     }
 
-    // case "DROP":
-    //   const empArray = [];
-    //   return empArray;
+    case "DROP":
+      return {
+        ...state,
+        cart: [],
+      };
 
     default:
       return state;

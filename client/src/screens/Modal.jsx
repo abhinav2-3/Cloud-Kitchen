@@ -11,7 +11,7 @@ const MODAL_STYLES = {
   zIndex: 1000,
   height: "90%",
   width: "90%",
-  overflow: "scroll",
+  overflow: "auto",
 };
 
 const OVERLAY_STYLES = {

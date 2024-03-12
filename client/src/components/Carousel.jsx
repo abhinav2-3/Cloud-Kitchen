@@ -14,7 +14,7 @@ const Carousel = ({ search, setSearch }) => {
   };
 
   return (
-    <div className="relative h-[70vh] overflow-hidden">
+    <div className="relative h-[70vh] overflow-hidden md:block hidden">
       <div
         className="w-screen flex duration-400 transition-all ease-in-out "
         style={{ transform: `translateX(-${current * 100}%)` }}
@@ -46,13 +46,15 @@ const Carousel = ({ search, setSearch }) => {
         </button>
       </div>
 
-      <input
-        type="search"
-        name="search"
-        // value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="outline-none py-2 px-4 absolute top-1/2 left-40 w-3/4"
-      />
+      <div className=" py-2 px-4 absolute top-1/2 left-40 w-3/4 hidden">
+        <input
+          name="search"
+          type="text"
+          // value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className=""
+        />
+      </div>
     </div>
   );
 };

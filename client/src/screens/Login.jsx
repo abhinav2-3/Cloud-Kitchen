@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const auth = localStorage.getItem("authToken");
@@ -38,37 +39,42 @@ const Login = () => {
           },
         }
       );
-
+      console.log(response.data.user);
       if (response.status === 200) {
         localStorage.setItem("authToken", response.data.authToken);
-        localStorage.setItem("userEmail", credential.email);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        toast.success("Logged In ✅");
         navigate("/");
       }
     } catch (err) {
       if (!err?.response) {
-        alert("No Server Response");
+        toast.error("No Server Response");
       } else if (err.response?.status === 400) {
-        alert("Invalid Email");
+        toast.error("Invalid Email");
       } else if (err.response?.status === 401) {
-        alert("Enter Correct Password");
+        toast.error("Enter Correct Password");
       } else {
-        alert("Login Failed");
+        toast.error("Login Failed");
       }
     }
   };
 
   return (
     <div>
-      <div className="signup">
-        <form className="w-50 mt-5" onSubmit={submitHandler}>
+      <div className="w-full h-[82vh] flex justify-center items-center">
+        <form
+          className="lg:w-2/6 md:w-2/4 w-4/6 text-white"
+          onSubmit={submitHandler}
+        >
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email address
             </label>
             <input
               type="email"
-              className="form-control"
+              className="form-control outline-none"
               name="email"
+              placeholder="Enter your Registered Email"
               value={credential.email}
               onChange={handleChange}
             />
@@ -82,16 +88,23 @@ const Login = () => {
             </label>
             <input
               type="password"
-              className="form-control"
+              className="form-control outline-none"
               name="password"
+              placeholder="password"
               value={credential.password}
               onChange={handleChange}
             />
           </div>
-          <button type="submit" className="m-3 btn btn-primary">
+          <button
+            type="submit"
+            className="bg-green-500 px-4 py-2 rounded font-semibold"
+          >
             Login
           </button>
-          <Link to={"/signup"} className="m-3 btn btn-danger">
+          <Link
+            to={"/signup"}
+            className="ml-4 text-red-500 px-4 py-2 rounded font-semibold"
+          >
             New User
           </Link>
         </form>

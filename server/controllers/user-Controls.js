@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
 
     const authToken = jwt.sign({ userId: user.id }, SECRET_KEY);
 
-    return res.status(201).json({ success: true, authToken });
+    return res.status(201).json({ success: true, authToken, user });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
@@ -49,7 +49,7 @@ export const login = async (req, res) => {
 
     const authToken = jwt.sign({ userId: user.id }, SECRET_KEY);
 
-    return res.status(200).json({ success: true, authToken });
+    return res.status(200).json({ success: true, authToken, user });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });

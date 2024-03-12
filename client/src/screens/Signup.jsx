@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const auth = localStorage.getItem("authToken");
+
   useEffect(() => {
     if (auth) navigate("/");
   });
@@ -37,16 +39,17 @@ const Signup = () => {
 
       if (response.status === 201) {
         localStorage.setItem("authToken", response.data.authToken);
-        localStorage.setItem("userEmail", credential.email);
+        localStorage.setItem("user", response.data.user);
+        toast.success("Registered ✅");
         navigate("/");
       }
     } catch (err) {
       if (!err?.response) {
-        alert("No Server Response");
+        toast.error("No Server Response");
       } else if (err.response?.status === 409) {
-        alert("Already Registered with this Email");
+        toast.error("Already Registered with this Email");
       } else {
-        alert("Login Failed");
+        toast.error("Signup Failed");
       }
     }
   };
@@ -57,16 +60,20 @@ const Signup = () => {
   };
   return (
     <>
-      <div className="signup">
-        <form className="w-50 mt-5" onSubmit={submitHandler}>
+      <div className="w-full h-[82vh] flex justify-center items-center">
+        <form
+          className="lg:w-2/6 md:w-2/4 w-4/6  text-white"
+          onSubmit={submitHandler}
+        >
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               Full Name
             </label>
             <input
               type="text"
-              className="form-control"
+              className="form-control outline-none"
               name="name"
+              placeholder="Enter your fullName"
               value={credential.name}
               onChange={handleChange}
             />
@@ -77,8 +84,9 @@ const Signup = () => {
             </label>
             <input
               type="email"
-              className="form-control"
+              className="form-control outline-none"
               name="email"
+              placeholder="Enter your Email"
               value={credential.email}
               onChange={handleChange}
             />
@@ -92,8 +100,9 @@ const Signup = () => {
             </label>
             <input
               type="password"
-              className="form-control"
+              className="form-control outline-none"
               name="password"
+              placeholder="Password"
               value={credential.password}
               onChange={handleChange}
             />
@@ -105,15 +114,22 @@ const Signup = () => {
             <input
               type="text"
               name="address"
-              className="form-control"
+              className="form-control outline-none"
+              placeholder="Enter your Address"
               value={credential.address}
               onChange={handleChange}
             />
           </div>
-          <button type="submit" className="m-3 btn btn-primary">
+          <button
+            type="submit"
+            className="bg-green-500 px-4 py-2 rounded font-semibold"
+          >
             Sign Up
           </button>
-          <Link to={"/login"} className="m-3 btn btn-danger">
+          <Link
+            to={"/login"}
+            className="ml-4 text-red-500 px-4 py-2 rounded font-semibold"
+          >
             Already a User
           </Link>
         </form>

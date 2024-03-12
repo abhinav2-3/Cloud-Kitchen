@@ -51,8 +51,14 @@ const AppProvider = ({ children }) => {
     return dispatch({ type: "REMOVE", payload: { id: food.id } });
   };
 
+  const dropItems = () => {
+    return dispatch({ type: "DROP" });
+  };
+
   return (
-    <AppContext.Provider value={{ ...state, handleAddToCart, removeItem }}>
+    <AppContext.Provider
+      value={{ ...state, handleAddToCart, removeItem, dropItems }}
+    >
       {children}
     </AppContext.Provider>
   );
