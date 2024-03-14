@@ -2,42 +2,26 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import FormatDate from "../Utils/FormatDate";
 import { toast } from "react-toastify";
+import { API_CLEAR_ORDER, API_GET_ORDER } from "../Utils/APIs";
 
 const Myorder = () => {
   const [orderedData, setOrderedData] = useState([]);
   const userData = localStorage.getItem("user");
   const user = JSON.parse(userData);
-  const API_GET_ORDER = "https://foodhut-server.onrender.com/api/myOrder";
-  const API_CLEAR_ORDER = "https://foodhut-server.onrender.com/api/clearOrder";
 
   const myOrder = async () => {
     try {
-      const response = await axios.post(
-        API_GET_ORDER,
-        { userId: user._id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(API_GET_ORDER, { userId: user._id });
       if (response) setOrderedData(response.data.sortedData);
     } catch (error) {
       console.error(error);
+      toast.error("Erro while Getting your Data");
     }
   };
 
   const clearOrder = async () => {
     try {
-      const response = await axios.post(
-        API_CLEAR_ORDER,
-        { userId: user._id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(API_CLEAR_ORDER, { userId: user._id });
       if (response) setOrderedData(response.data.order);
       toast.success("History Cleared");
     } catch (error) {

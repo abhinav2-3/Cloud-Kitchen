@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import Modal from "../screens/Modal";
+import Modal from "../Utils/Modal";
 import Cart from "../screens/Cart";
-import { useProductContext } from "../Context/ProductContext";
 import { FaCartFlatbed } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const { cart } = useProductContext();
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const isSignupPage = location.pathname === "/signup";
+
+  const cart = useSelector((state) => state.cart.cart);
 
   const auth = localStorage.getItem("authToken");
   const [cartView, setCartView] = useState(false);

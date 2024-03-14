@@ -1,20 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
-import { useProductContext } from "../Context/ProductContext";
 import Carousel from "../components/Carousel";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchItems } from "../App/reducers";
 
 const Home = () => {
   const [search, setSearch] = useState("");
-  const { items, categoryData, isLoading, isError } = useProductContext();
+  const dispatch = useDispatch();
+
+  const items = useSelector((state) => state.item.items);
+  const categoryData = useSelector((state) => state.item.categoryData);
+  const status = useSelector((state) => state.item.status);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchItems());
+    }
+  }, [dispatch, status]);
 
   return (
     <div className="w-full h-full">
       <Carousel search={search} setSearch={setSearch} />
-      {isLoading ? (
+      {status === "loading" ? (
         <Loading />
-      ) : isError ? (
+      ) : status === "failed" ? (
         <Error />
       ) : (
         <div className="text-white">

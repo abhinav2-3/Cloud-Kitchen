@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useProductContext } from "../Context/ProductContext";
+import { useDispatch } from "react-redux";
+import { handleAddToCart } from "../App/cartReducer";
 
 const Card = ({ items, option }) => {
   const [size, setSize] = useState("");
@@ -7,7 +8,8 @@ const Card = ({ items, option }) => {
   const priceRef = useRef();
   const priceOption = Object.keys(option);
   const finalPrice = qty * parseInt(option[size]);
-  const { handleAddToCart } = useProductContext();
+  const dispatch = useDispatch();
+  const { name, _id } = items;
 
   useEffect(() => {
     setSize(priceRef.current.value);
@@ -52,7 +54,9 @@ const Card = ({ items, option }) => {
         <h3 className="text-xl font-semibold">₹{finalPrice}/-</h3>
         <button
           className="bg-red-700 rounded py-2 text-white font-semibold"
-          onClick={() => handleAddToCart(items, qty, finalPrice, size)}
+          onClick={() =>
+            dispatch(handleAddToCart({ qty, finalPrice, size, name, _id }))
+          }
         >
           Add To Cart
         </button>

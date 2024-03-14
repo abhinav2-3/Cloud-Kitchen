@@ -1,22 +1,26 @@
 import React from "react";
 import axios from "axios";
-import { useProductContext } from "../Context/ProductContext";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { dropItems, removeItem } from "../App/cartReducer";
+import {
+  API_CHEKOUT_ORDER,
+  API_GET_KEY,
+  API_SET_ORDER,
+  API_VALIDATE,
+} from "../Utils/APIs";
 
 const Cart = () => {
-  const { removeItem, dropItems, cart } = useProductContext();
-  const jsonData = localStorage.getItem("user");
-  const user = JSON.parse(jsonData);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const totalPrice = cart.reduce((total, food) => total + food.price, 0);
+  const cart = useSelector((state) => state.cart.cart);
+  const jsonData = localStorage.getItem("user");
+  const user = JSON.parse(jsonData);
 
-  const API_SET_ORDER = "https://foodhut-server.onrender.com/api/placeOrder";
-  const API_CHEKOUT_ORDER = "https://foodhut-server.onrender.com/api/checkout";
-  const API_GET_KEY = "https://foodhut-server.onrender.com/api/getkey";
-  const API_VALIDATE = "https://foodhut-server.onrender.com/api/validate";
+  const totalPrice = cart.reduce((total, food) => total + food.price, 0);
 
   const placeOrder = async () => {
     const data = localStorage.getItem("user");
@@ -32,9 +36,9 @@ const Cart = () => {
           });
         })
       );
-      dropItems();
-      navigate("/orders", { replace: true });
+      dispatch(dropItems());
       toast.success("Order Placed");
+      navigate("/orders", { replace: true });
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong!!");
@@ -60,8 +64,7 @@ const Cart = () => {
         description: `${
           user.name.split(" ")[0]
         }'s Transaction is under Processing...`,
-        image:
-          "https://as1.ftcdn.net/v2/jpg/03/15/06/10/1000_F_315061039_JPz3A8Yd64Ugsy2T6Ez6E9IPwAhs3ftD.jpg",
+        image: "https://avatars.githubusercontent.com/u/114284694?v=4",
         order_id: response.data.order.id,
         handler: async function (response) {
           const body = { ...response };
@@ -122,7 +125,7 @@ const Cart = () => {
                   <button
                     type="button"
                     className=" hover:scale-110 duration-300"
-                    onClick={() => removeItem(food)}
+                    onClick={() => dispatch(removeItem(food))}
                   >
                     <RiDeleteBin6Fill size={25} color="red" />
                   </button>

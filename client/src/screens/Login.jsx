@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { API_LOGIN } from "../Utils/APIs";
 
 const Login = () => {
   const auth = localStorage.getItem("authToken");
@@ -30,16 +31,7 @@ const Login = () => {
       password: credential.password,
     };
     try {
-      const response = await axios.post(
-        "https://foodhut-server.onrender.com/api/login",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log(response.data.user);
+      const response = await axios.post(API_LOGIN, formData);
       if (response.status === 200) {
         localStorage.setItem("authToken", response.data.authToken);
         localStorage.setItem("user", JSON.stringify(response.data.user));
